@@ -18,7 +18,7 @@ namespace Reversi
         {
             player = pl;
         }
-        public ((int, int), Ellipse) Computers_Turn(GameAttributes game) 
+        public ((int, int), Ellipse) Computers_Turn(GameAttributes game)
         {
             added_successfully = false;
             Random rand = new Random();
@@ -44,9 +44,7 @@ namespace Reversi
                     }
             }
             return ((-1, -1), null);
-            
         }
-        
         private void PlaceDisk(Disk[,] disks, int rows, int cols, (int, int) dir, GameAttributes game)
         {
             for (int i = 0; i < rows; i++)
@@ -62,8 +60,7 @@ namespace Reversi
                                 return;
                             }
         }
-        
-        private bool Is_In_Borders(int c, int r , Disk[,] disks)
+        private bool Is_In_Borders(int c, int r, Disk[,] disks)
         {
             if (c < 0 || r < 0 || r >= disks.GetLength(0) || c >= disks.GetLength(1))
                 return false;

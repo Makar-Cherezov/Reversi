@@ -1,12 +1,7 @@
-﻿
-using System;
-
+﻿using System;
 using System.ComponentModel;
-
 using System.Runtime.CompilerServices;
-
 using System.Threading.Tasks;
-
 using System.Windows.Shapes;
 
 namespace Reversi
@@ -16,14 +11,15 @@ namespace Reversi
         public delegate void AccountHandler((int, int) iter, Ellipse disk);
         public event AccountHandler AddDiskToField;
         public delegate void AccountHandler2();
-        public event AccountHandler2 EndGame, ShowActivePlayer, NoDataFound, Saved, Loaded;
+        public event AccountHandler2 StartNewGame, IncorrectInput, EndGame, ShowActivePlayer, NoDataFound, Saved, Loaded;
         private (int, int) canvas_indexes;
         private Ellipse last_added;
         public GameAttributes Game;
         private bool single_player;
         private Computer_Player Comp_player;
         private bool computerTurnInProcess;
-        GameSetter gameSetter;
+        private GameSetter gameSetter;
+        private Leaderboard leaderboard;
         public ViewModel()
         {
             Visibility = "Hidden";
@@ -38,6 +34,7 @@ namespace Reversi
             if (single_player)
                 Comp_player = new Computer_Player(Game.Player2);
             ShowActivePlayer.Invoke();
+            ShowLeader();
         }
 
         private void Display_Init_Gameset()
@@ -48,7 +45,6 @@ namespace Reversi
                 for (int j = 0; j < w; j++)
                     if (Game.Placed_Disks.Placed_disks[i, j] != null)
                         AddDiskToField.Invoke((i, j), Game.Placed_Disks.Placed_disks[i, j].shape);
-            
         }
 
         public void Process_Click(System.Windows.Point p)
@@ -76,30 +72,39 @@ namespace Reversi
                         Make_Computers_Turn();
                 }
                 else
-                    EndGame.Invoke();
+                {
+                    ProcessEndGame();
+                }
+                }
             }
-        }
         private async void Make_Computers_Turn()
         {
             computerTurnInProcess = true;
             await Task.Delay(500);
             (canvas_indexes, last_added) = Comp_player.Computers_Turn(Game);
-            AddDiskToField.Invoke(canvas_indexes, last_added);
-            computerTurnInProcess = false;
-            if (!Game.gameFinished)
+            if (last_added == null || Game.gameFinished)
+                ProcessEndGame();
+            else
             {
                 ShowActivePlayer.Invoke();
+                AddDiskToField.Invoke(canvas_indexes, last_added);
             }
-            else
-                EndGame.Invoke();
+            computerTurnInProcess = false;
+            
         }
-        public void SaveGame()
+        private void ProcessEndGame()
+        {
+            AddLeader();
+            EndGame.Invoke();
+            Visibility = "Hidden";
+        }
+        private void SaveGame()
         {
             int h = Game.Placed_Disks.Placed_disks.GetLength(0);
             int w = Game.Placed_Disks.Placed_disks.GetLength(1);
             FileOperator.SaveGame(h, w, Game.DisksToInt(), Game.first_player_next, single_player, Game.Player1.Player_name, Game.Player2.Player_name);
         }
-        public void LoadGame()
+        private void LoadGame()
         {
             FileOperator.GameData gd = FileOperator.LoadGame();
             if (gd == null)
@@ -116,6 +121,17 @@ namespace Reversi
                 ShowActivePlayer.Invoke();
             }
         }
+        private void ShowLeader()
+        {
+            leaderboard = new Leaderboard();
+            leaderboard.Import();
+            LeaderInfo = leaderboard.Find(Game.Placed_Disks.Placed_disks.GetLength(0), Game.Placed_Disks.Placed_disks.GetLength(1));
+        }
+        private void AddLeader()
+        {
+            Player win = Game.Winner();
+            leaderboard.NewLead(Game.Placed_Disks.Placed_disks.GetLength(0), Game.Placed_Disks.Placed_disks.GetLength(1), win.Player_name, win.Score);
+        }
         private Command startGame;
         public Command StartGame
         {
@@ -123,11 +139,28 @@ namespace Reversi
             {
                 return startGame ?? (startGame = new Command(obj =>
                 {
+                    try
+                    {
+                        int h = int.Parse(FieldHeight);
+                        int w = int.Parse(FieldWidth);
+                        if (h < 8 || h > 20 || w < 8 || w > 20)
+                            IncorrectInput.Invoke();
+                        else
+                        {
+                            StartNewGame.Invoke();
+                            Visibility = "Visible";
+                            Pl1Name = "";
+                            Pl2Name = "";
+                        }
+                        }
+                    catch
+                    {
+                        IncorrectInput.Invoke();
+                    }
                     FieldHeight = "";
                     FieldWidth = "";
-                    Visibility = "Visible";
-                    Pl1Name = "";
-                    Pl2Name = "";
+                    
+                    
                 }));
             }
         }
@@ -144,6 +177,7 @@ namespace Reversi
                         Visibility = "Visible";
                         Loaded.Invoke();
                         Display_Init_Gameset();
+                        ShowLeader();
                     }
                 }));
             }
@@ -199,7 +233,7 @@ namespace Reversi
                 OnPropertyChanged();
             }
         }
-        
+
         private string currentName;
         public string CurrentName
         {
@@ -236,6 +270,19 @@ namespace Reversi
             set
             {
                 pl2Name = value;
+                OnPropertyChanged();
+            }
+        }
+        private string leaderInfo;
+        public string LeaderInfo
+        {
+            get
+            {
+                return this.leaderInfo;
+            }
+            set
+            {
+                leaderInfo = value;
                 OnPropertyChanged();
             }
         }

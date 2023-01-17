@@ -31,7 +31,14 @@ namespace Reversi
             ((ViewModel) DataContext).NoDataFound += NoDataMessage;
             ((ViewModel)DataContext).Saved += Save_Click;
             ((ViewModel)DataContext).Loaded += Load_Click;
+            ((ViewModel)DataContext).StartNewGame += Start_Click;
+            ((ViewModel)DataContext).IncorrectInput += IncorrectInput;
+            ((ViewModel)DataContext).EndGame += EndGame;
             SecondPlayerInfo.Visibility = System.Windows.Visibility.Hidden;
+        }
+        private void IncorrectInput()
+        {
+            MessageBox.Show("Введите числа от 8 до 20!");
         }
         private void NoDataMessage()
         {
@@ -43,13 +50,9 @@ namespace Reversi
             int Score2 = ((ViewModel) DataContext).Game.Player2.Score;
             string name1 = ((ViewModel) DataContext).Game.Player1.Player_name;
             string name2 = ((ViewModel) DataContext).Game.Player2.Player_name;
-            string winner = "- Дружба";
-            CurrentInfo.Visibility = System.Windows.Visibility.Hidden;
-            if (Score1 != Score2)
-                winner = Score1 > Score2 ? "- " + name1 : "- " + name2;
             MessageBox.Show($"Конец игры! \n Счёт игрока {name1}: {Score1}" +
                 $"\n Счёт игрока {name2}: {Score2}" +
-                $"\n Победитель {winner}!" +
+                $"\n Победитель - {((ViewModel)DataContext).Game.Winner().Player_name}!" +
                 $"\n Начать новую игру?");
             GameArea.Children.Clear();
             
@@ -109,23 +112,14 @@ namespace Reversi
             }
         }
 
-        private void Start_Click(object sender, RoutedEventArgs e)
+        private void Start_Click()
         {
             GameArea.Children.Clear();
             int width, height;
-            try
-            {
-                width = int.Parse(fieldWidth.Text);
-                height = int.Parse(fieldHeight.Text);
-                DrawGameArea(height, width);
-                ((ViewModel) DataContext).Create_GameAttributes(height, width, (bool)One.IsChecked, Pl1Name.Text, Pl2Name.Text);
-                ((ViewModel) DataContext).EndGame += EndGame;
-            }
-            catch
-            {
-                MessageBox.Show("Введите числа!");
-                
-            }
+            width = int.Parse(fieldWidth.Text);
+            height = int.Parse(fieldHeight.Text);
+            DrawGameArea(height, width);
+            ((ViewModel)DataContext).Create_GameAttributes(height, width, (bool)One.IsChecked, Pl1Name.Text, Pl2Name.Text);
         }
 
         private void MouseClick(object sender, MouseButtonEventArgs e)
@@ -149,7 +143,6 @@ namespace Reversi
         private void Load_Click()
         {
             GameArea.Children.Clear();
-            ((ViewModel) DataContext).EndGame += EndGame;
             int h = ((ViewModel)DataContext).Game.Placed_Disks.Placed_disks.GetLength(0);
             int w = ((ViewModel)DataContext).Game.Placed_Disks.Placed_disks.GetLength(1);
             DrawGameArea(h, w);

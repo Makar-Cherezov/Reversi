@@ -84,7 +84,7 @@ namespace Reversi
         public GameAttributes MakeGame(string name1, string name2, bool fpnext, ISetGame setter)
         {
             if (name1 == "")
-                name1 = "Игрок 1";
+                name1 = "Немезида";
             Player Player1 = new Player(name1, Brushes.Black, 1);
             if (name2 == "")
                 name2 = "Фортуна";
@@ -132,6 +132,13 @@ namespace Reversi
         public void CalculateScore()
         {
             (Player1.Score, Player2.Score) = Placed_Disks.CalcScore();
+        }
+        public Player Winner()
+        {
+            if (Player1.Score != Player2.Score)
+                return Player1.Score > Player2.Score ? Player1 : Player2;
+            else
+                return new Player("Дружба", null, Player1.Score);
         }
         public int[] DisksToInt()
         {

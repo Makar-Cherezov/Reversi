@@ -29,7 +29,7 @@ namespace Reversi
                 };
             }
         }
-        
+
         public Disk[,] Placed_disks;
         public Disks(int height, int width)
         {
@@ -78,7 +78,7 @@ namespace Reversi
 
         private void Flip_Disks(int r, int c, Player ActivePlayer)
         {
-            (int, int)[] directions = { (1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (1, -1), (-1, 1)};
+            (int, int)[] directions = { (1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (1, -1), (-1, 1) };
             int Act_ID = ActivePlayer.ID;
             SolidColorBrush brush = ActivePlayer.Players_brush;
             int count, i, j;
@@ -115,7 +115,7 @@ namespace Reversi
                 Placed_disks[r, c].shape.Fill = brush;
             }
         }
-    
+
 
     }
 }
