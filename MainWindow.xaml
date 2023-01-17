@@ -1,0 +1,60 @@
+﻿<Window x:Class="Reversi.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Reversi"
+        mc:Ignorable="d"
+        Title="Reversi" Height="450" Width="865.6" >
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding Save}"  Key="s" Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding Load}"  Key="l" Modifiers="Ctrl"/>
+    </Window.InputBindings>
+    <Grid RenderTransformOrigin="0.343,0.456">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="18*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <WrapPanel x:Name="SecondPlayerInfo" Grid.Row="1" Grid.Column="0" Orientation="Horizontal" >
+            <TextBox x:Name="Pl2Name"  Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="116,244.6,0,0" TextWrapping="Wrap" Text="{Binding Pl2Name}" VerticalAlignment="Top" Width="95"/>
+            <Label Content="Имя игрока 2" HorizontalAlignment="Left" Margin="22.4,-25,0,0" Grid.Row="1" VerticalAlignment="Top"  />
+        </WrapPanel>
+        <Canvas x:Name="GameArea"  ClipToBounds="True" Margin="0,0,0,0" Grid.Column="1" Grid.Row="1" MouseLeftButtonDown="MouseClick">
+        </Canvas>
+        <TextBox x:Name="fieldHeight"  Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="22,78.6,0,0" TextWrapping="Wrap" Text="{Binding FieldHeight}" VerticalAlignment="Top" Width="38"/>
+        <GroupBox Grid.Column="0" Grid.Row="1" Header="Режим игры" HorizontalAlignment="Left" Height="70" Margin="22,124.6,0,0" VerticalAlignment="Top" Width="110" >
+            <StackPanel Margin="0,0,0,0">
+                <RadioButton x:Name="One" Content="Один игрок" Checked="radioButton_CheckedChanged" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Height="29" RenderTransformOrigin="0.5,0.5" IsChecked="True" />
+                <RadioButton x:Name="Two" Content="Два игрока" Checked="radioButton_CheckedChanged" HorizontalAlignment="Left" Margin="0,-5,0,0" VerticalAlignment="Top" Height="29" RenderTransformOrigin="0.5,0.5" />
+            </StackPanel>
+        </GroupBox>
+
+        <Button Command="{Binding StartGame}"  Grid.Column="0" Grid.Row="1" Content="Начать новую игру" HorizontalAlignment="Left" Margin="22,285.6,0,0" VerticalAlignment="Top" Width="120" Click="Start_Click" Height="31"/>
+        <Button Command="{Binding Load}" Content="Загрузить игру" HorizontalAlignment="Left" Margin="22,10,0,0" VerticalAlignment="Top" Width="110" />
+        <Button Command="{Binding Save}" Content="Сохранить игру" HorizontalAlignment="Left" Margin="173,10,0,0" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="2" />
+        <TextBlock HorizontalAlignment="Left" Margin="22,21.6,0,0" Grid.Row="1" TextWrapping="WrapWithOverflow" Text="Задайте размеры поля, высота и ширина" VerticalAlignment="Top" Height="57" Width="105"/>
+        <TextBox x:Name="fieldWidth"  Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="79,78.6,0,0" TextWrapping="Wrap" Text="{Binding FieldWidth}" VerticalAlignment="Top" Width="38"/>
+
+        <Label Content="x" HorizontalAlignment="Left" Margin="63,76,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <StackPanel x:Name="CurrentInfo" Grid.Row="1" Grid.Column="2" Visibility="{Binding Visibility}">
+            <Label Content="Текущий игрок:"   HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" />
+            <Label x:Name="CurrentPlayerName"  Content="" HorizontalAlignment="Left" Margin="10,0,0,0"  VerticalAlignment="Top"/>
+            <Ellipse x:Name ="CurrentPlayerBrush"  Fill="White"  HorizontalAlignment="Left" Height="22" Margin="50,0,0,0" Grid.Row="1" Stroke="Black" VerticalAlignment="Top" Width="22"/>
+            <Label Content="Счёт:" HorizontalAlignment="Left" Margin="10,10,0,0"  VerticalAlignment="Top"/>
+            <Label x:Name="Score" Content="" HorizontalAlignment="Left" Margin="60,-18,0,0"  VerticalAlignment="Top"/>
+        </StackPanel>
+        
+        <Label Content="Имя игрока" HorizontalAlignment="Left" Margin="22,210.6,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <TextBox x:Name="Pl1Name"  Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="116,213.6,0,0" TextWrapping="Wrap" Text="{Binding Pl1Name}" VerticalAlignment="Top" Width="95"/>
+
+
+
+
+
+    </Grid>
+</Window>

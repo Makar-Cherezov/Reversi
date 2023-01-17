@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reversi", "Reversi.csproj", "{418384DD-F66D-492A-98B0-39B5728B62FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOperator", "..\FileOperator\FileOperator.csproj", "{420F3AF5-E7D0-43BB-9B37-D0BF0D463BC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{418384DD-F66D-492A-98B0-39B5728B62FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{418384DD-F66D-492A-98B0-39B5728B62FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{418384DD-F66D-492A-98B0-39B5728B62FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{418384DD-F66D-492A-98B0-39B5728B62FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{420F3AF5-E7D0-43BB-9B37-D0BF0D463BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{420F3AF5-E7D0-43BB-9B37-D0BF0D463BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{420F3AF5-E7D0-43BB-9B37-D0BF0D463BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{420F3AF5-E7D0-43BB-9B37-D0BF0D463BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CAB92EEB-778C-4AED-A45A-A9FD92AFB8BB}
+	EndGlobalSection
+EndGlobal
